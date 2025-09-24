@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Optimization API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #1a73e8;
+        }
+        h2 {
+            color: #444;
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+        a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #1a73e8;
+            border-radius: 4px;
+        }
+        code {
+            background: #e8ecef;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Image Optimization API</h1>
+    <p>This API dynamically fetches images from external URLs, optimizes them based on device type (detected via User-Agent), client dimensions, and Device Pixel Ratio (DPR), and serves them in the preferred format. It handles special cases like long comic strips to preserve quality and caches results for performance.</p>
+    
+    <h2>Key Features</h2>
+    <ul>
+        <li><strong>Device-Aware Optimization</strong>: Resizes images for mobile (640x480), tablet (1024x768), or desktop (1920x1080), with DPR scaling for high-res screens.</li>
+        <li><strong>Comic Strip Support</strong>: For tall images (aspect ratio > 3), uses width-driven resizing with a 8000px height cap and higher quality (90%).</li>
+        <li><strong>Format Negotiation</strong>: Supports WebP (default), JPEG, PNG, BMP, TIFF, and GIF, based on the <code>Accept</code> header. Falls back to WebP for unsupported or unspecified formats.</li>
+        <li><strong>Health Check</strong>: Verify service status.</li>
+    </ul>
+    
+    <h2>Endpoints</h2>
+    <div class="endpoint">
+        <strong>GET /optimize</strong><br>
+        Optimize an image. Params: <code>url</code> (required), <code>width</code>, <code>height</code>, <code>dpr</code>.<br>
+        Headers: <code>User-Agent</code> (device detection), <code>Accept</code> (format: <code>image/webp</code>, <code>image/jpeg</code>, <code>image/png</code>, <code>image/bmp</code>, <code>image/tiff</code>, <code>image/gif</code>; defaults to WebP).<br>
+        Example: <a href="/optimize?url=https://httpbin.org/image/png">/optimize?url=https://httpbin.org/image/png</a> (returns WebP by default)
+    </div>
+    <div class="endpoint">
+        <strong>GET /health</strong><br>
+        Returns service health status.<br>
+        Example: <a href="/health">/health</a>
+    </div>
+    <div class="endpoint">
+        <strong>GET /api/swagger</strong><br>
+        Interactive OpenAPI 3.0 documentation for the API.<br>
+        <a href="/api/swagger">View API Documentation</a>
+    </div>
+    
+</body>
+</html>
