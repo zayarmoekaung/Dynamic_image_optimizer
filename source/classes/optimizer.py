@@ -30,13 +30,14 @@ class Optimizer:
             'quality': 90,  
             'max_height_cap': 3000
         }
+        fmt, ext, mime = get_best_format(self.accept_header)
         CACHE_DIR = Config.CACHE_DIR or './cache'
         if not os.path.exists(CACHE_DIR):
             os.makedirs(CACHE_DIR)
         cache_key = get_cache_key(self.url, self.device_type)
         cache_path = os.path.join(CACHE_DIR, secure_filename(cache_key))
-        if os.path.exists(cache_path):
-            return send_file(cache_path, mimetype='image/webp')
+        #if os.path.exists(cache_path):
+        #    return send_file(cache_path, mimetype=mime)
         try:
             response = requests.get(self.url, timeout=10)
             response.raise_for_status()
@@ -47,7 +48,6 @@ class Optimizer:
             img = Image.open(img_data)
         except IOError:
             abort(400, description="Invalid image data")
-        fmt, ext, mime = get_best_format(self.accept_header)
         try:
             rules = OPTIMIZATION_RULES.get(self.device_type, OPTIMIZATION_RULES['desktop'])
             if self.client_width > 0 and self.client_height > 0:
@@ -78,8 +78,8 @@ class Optimizer:
                 save_kwargs['progressive'] = True  
             img.save(output, format=fmt, **save_kwargs)
             output.seek(0)
-            with open(cache_path, 'wb') as f:
-                f.write(output.getbuffer())
+            #with open(cache_path, 'wb') as f:
+            #    f.write(output.getbuffer())
             return send_file(output, mimetype=mime)
         except Exception as e:
             abort(500, description=f"Image optimization failed: {str(e)}")
