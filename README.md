@@ -59,7 +59,7 @@ Fetches an external image, optimizes it based on device type and client paramete
    - Returns: JPEG image, width ~1125px (375*3), height proportional (capped at 8000px), quality 90 (if comic strip).
 
 #### Notes
-- **Comic Strips**: Tall images (height/width > 3) are resized based on width to preserve quality, with a max height of 3000px.
+- **Comic Strips**: Tall images (height/width > 3) are resized based on width to preserve quality, with a max height of 8000px.
 - **Performance**: Use retries (3 attempts) and timeout (30s) for fetching external images to handle network issues.
 - **Client-Side Usage**: Pass `window.innerWidth`, `window.innerHeight`, and `window.devicePixelRatio` in JavaScript for optimal results:
   ```javascript
